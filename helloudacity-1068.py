@@ -3,6 +3,9 @@ import os
 import jinja2
 import webapp2
 
+template_dir = os.path.join(os.path.dirname(_file_), 'templates')
+jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir))
+
 form_html = """
 <form>
 <h2>Add a Food</h2>
