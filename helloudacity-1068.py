@@ -3,22 +3,11 @@ import os
 import jinja2
 import webapp2
 
+from google.appengine.ext import db
+
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir))
-
-hidden_html = """
-<input type="hidden" name="food" value="%s">
-"""
-item_html = "<li>%s</li>"
-
-shopping_list_html = """
-<br>
-<br>
-<h2>Shopping List</h2>
-<ul>
-%s
-</ul>
-"""
+jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
+								autoescape = True)
 
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
@@ -30,29 +19,25 @@ class Handler(webapp2.RequestHandler):
 	def render(self, template, **kw):
 		self.write(self.render_str(template, **kw))
 
-class MainPage(Handler):
+class Entry(db.Model):
+	subject = db.StringProperty(required = True)
+	content = db.TextProperty(required = True)
+	created = db.DateTimeProperty(auto_now_add = True)
+
+class MyBlogPage(Handler):
+	def render_front(self, subject="", content=""):
+		entries = db.GqlQuery("SELECT * FROM Entry "
+							"ORDER BY created DESC")
+		self.render("blog.html", subject = subject, content = content, entries = entries)
+
 	def get(self):
-		n = self.request.get("n")
-		if n and n.isdigit():
-			n = int(n)
-		self.render("shopping_list.html", n=n)
+		self.render_front()
 
-		# output = form_html
-		# output_hidden = ""
+class NewPostPage(Handler):
+	def get(self):
+		self.write("Hello!")
 
-		# items = self.request.get_all("food")
-		# if items:
-		# 	output_items = ""
-		# 	for item in items:
-		# 		output_hidden += hidden_html%item
-		# 		output_items += item_html%item
-		# 	output_shopping = shopping_list_html % output_items
-		# 	output += output_shopping
-
-		# output = output % output_hidden
-		
-		# self.write(output)
-
-app = webapp2.WSGIApplication([('/', MainPage)
+app = webapp2.WSGIApplication([('/myblog', MyBlogPage),
+							   ('/myblog/newpost', NewPostPage)
 							   ],
 							   debug=True)

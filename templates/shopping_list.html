@@ -1,11 +1,18 @@
-<form>
-	<h2>Add a Food</h2>
-	<input type="text" name="food">
-	<button>Add</button>
-
-	{% if n == 1 %}
-		n equals 1
-	{% else %}
-		n does not equal 1
-	{% endif %}
-</form>
+{% extends "base.html" %}
+{% block content %}
+<ol>
+		{% for x in range(1,n+1) %}
+			<li>
+				{% if (x%3 == 0 and x%5 ==0) %}
+					Fizzbuzz
+				{% elif (x%3 == 0) %}
+					Fizz
+				{% elif (x%5 == 0) %}
+					Buzz
+				{% else %}
+					{{x}}
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ol>
+{% endblock %}

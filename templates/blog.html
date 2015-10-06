@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<style>
+			div.centered {
+				text-align: center;
+			}
+			div.block {
+				margin-right: 50px;
+				margin-left: 50px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-right: 50px;
+				padding-left: 50px;
+			}
+			div.header {
+				margin-right: 5px;
+				margin-top: 5px;
+				margin-left: 5px;
+				margin-bottom: 1px;
+				padding-right: 5px;
+				padding-top: 5px;
+				padding-left: 5px;
+				padding-bottom: 1px;
+			}
+			div.subject {
+    			float: left;
+    			font-size: 25px;
+    			font-weight: bold;
+
+			}
+			div.created {
+				float: right;
+			}
+			div.blog-header {
+				text-align: center;
+				font-weight: bold;
+				font-size: 50px;
+				color: #000000;
+				margin-bottom: 10px;
+			}
+		</style>
+		<title>My Blog!</title>
+	</head>
+
+	<body>
+		<div class="block">
+			<div class="blog-header">
+					Hello Udacity-1068! My Blog!
+			</div>
+			<form action="http://localhost:8080/myblog/newpost">
+				<div class="centered">
+					<input type="submit" value="New Post">
+				</div>
+			</form>
+		{% for entry in entries %}
+			<div class="header">
+				<div class="subject">{{entry.subject}}</div>
+				<div class="created">{{entry.created}}</div>
+			</div>
+			<br>	
+			<hr color="black">
+			<br>
+			<div>{{entry.content}}</div>
+		{% endfor %}
+		</div>
+	</body>
+
+</html>
