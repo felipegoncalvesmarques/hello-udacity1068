@@ -1,0 +1,10 @@
+{% extends "base_blog.html" %}
+
+{% block title %}CS253-UDACITY{% endblock %}
+
+{% block content %}
+	{{ posts|safe }}
+	{% if time %}
+		{{"queried %.0f seconds ago" % time}}
+	{% endif %}
+{% endblock %}
